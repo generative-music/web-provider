@@ -17,11 +17,11 @@ const fetchObject = (dependency, origin, audioContext) =>
   ).then(fetched => assembleKeyValuePairs(fetched));
 
 const makeProvide = ({ origin, dependencyIndex }) => (
-  dependencies,
+  dependencyNames = [],
   audioContext
 ) =>
   Promise.all(
-    dependencies.map(dependencyName => {
+    dependencyNames.map(dependencyName => {
       const dependency = dependencyIndex[dependencyName];
       return (Array.is(dependency) ? fetchArray : fetchObject)(
         dependency,
