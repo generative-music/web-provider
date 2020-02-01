@@ -3,7 +3,7 @@
 import expect from 'chai/interface/expect';
 import assembleKeyValuePairs from './assemble-key-value-pairs';
 
-describe('assembleKeyValue', () => {
+describe('assembleKeyValuePairs', () => {
   it('should create an object from an array of [key, value] pairs', () => {
     expect(
       assembleKeyValuePairs([

@@ -14,12 +14,12 @@ const attachUpgradeNeededHandler = openRequest => {
 
 const openDb = () =>
   new Promise(resolve => {
-    const request = window.indexedDb.open(DB_NAME, DB_VERSION);
+    const request = window.indexedDB.open(DB_NAME, DB_VERSION);
     const handleSuccess = event => {
       request.removeEventListener('success', handleSuccess);
       resolve(event.target.result);
     };
-    window.addEventListener('success', handleSuccess);
+    request.addEventListener('success', handleSuccess);
     attachUpgradeNeededHandler(request);
   });
 

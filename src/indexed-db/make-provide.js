@@ -67,10 +67,10 @@ const makeProvideWithFallback = (dependencyIndex, provideFresh) => {
       ).filter(dependencyName => {
         const cachedDependency = cachedDependencies[dependencyName];
         if (Array.isArray(cachedDependency)) {
-          return cachedDependency.every(arrayBuffer => arrayBuffer !== null);
+          return cachedDependency.some(arrayBuffer => !arrayBuffer);
         }
-        return Reflect.ownKeys(cachedDependency).every(
-          key => cachedDependency[key] !== null
+        return Reflect.ownKeys(cachedDependency).some(
+          key => !cachedDependency[key]
         );
       });
       if (uncachedDependencyNames.length === 0) {

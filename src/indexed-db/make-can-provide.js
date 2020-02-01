@@ -8,19 +8,25 @@ const makeCanProvide = (dependencyIndex, canProvideFresh) => {
       ? dependency
       : Reflect.ownKeys(dependency).map(key => dependency[key]);
     return Promise.all(urls.map(url => getCachedUrl(db, url))).then(results =>
-      results.some(arrayBuffer => arrayBuffer === null)
+      results.some(arrayBuffer => !arrayBuffer)
     );
   };
   return (dependencyNames = []) => {
     if (dependencyNames.length === 0) {
       return Promise.resolve(true);
     }
-    return openDb().then(db => {
-      const uncachedDependencyNames = dependencyNames.filter(dependencyName =>
-        isNotCached(db, dependencyName)
-      );
-      return canProvideFresh(uncachedDependencyNames);
-    });
+    return openDb()
+      .then(db =>
+        Promise.all(
+          dependencyNames.map(dependencyName => isNotCached(db, dependencyName))
+        )
+      )
+      .then(isNotCachedResults => {
+        const uncachedDependencyNames = dependencyNames.filter(
+          (_, i) => isNotCachedResults[i]
+        );
+        return canProvideFresh(uncachedDependencyNames);
+      });
   };
 };
 
