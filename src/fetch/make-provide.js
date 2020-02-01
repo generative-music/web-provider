@@ -1,34 +1,15 @@
-import fetchAudioBuffer from './fetch-audio-buffer';
-import assembleKeyValuePairs from '../utils/assemble-key-value-pairs';
+import makeResolveDependencies from '../utils/make-resolve-dependencies';
 
-const fetchArray = (dependency, origin, audioContext) =>
-  Promise.all(
-    dependency.map(url => fetchAudioBuffer(`${origin}/${url}`, audioContext))
-  );
+const fetchAudioBuffer = (url, audioContext) =>
+  window
+    .fetch(url)
+    .then(response => response.arrayBuffer())
+    .then(ab => audioContext.decodeAudioData(ab));
 
-const fetchObject = (dependency, origin, audioContext) =>
-  Promise.all(
-    Reflect.ownKeys(dependency).map(key =>
-      fetchAudioBuffer(
-        `${origin}/${dependency[key]}`,
-        audioContext
-      ).then(audioBuffer => [key, audioBuffer])
-    )
-  ).then(fetched => assembleKeyValuePairs(fetched));
+const fetchAudioBuffers = (urls, audioContext) =>
+  Promise.all(urls.map(url => fetchAudioBuffer(url, audioContext)));
 
-const makeProvide = ({ origin, dependencyIndex }) => (
-  dependencyNames = [],
-  audioContext
-) =>
-  Promise.all(
-    dependencyNames.map(dependencyName => {
-      const dependency = dependencyIndex[dependencyName];
-      return (Array.is(dependency) ? fetchArray : fetchObject)(
-        dependency,
-        origin,
-        audioContext
-      ).then(fetchedDependency => [dependencyName, fetchedDependency]);
-    })
-  ).then(fetched => assembleKeyValuePairs(fetched));
+const makeProvide = dependencyIndex =>
+  makeResolveDependencies(dependencyIndex, fetchAudioBuffers);
 
 export default makeProvide;
