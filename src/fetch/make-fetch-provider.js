@@ -1,9 +1,9 @@
-import makeCanProvide from './make-can-provider';
-import makeProvider from '../utils/make-provider';
+import makeCanProvide from './make-can-provide';
+import makeProvide from './make-provide';
 
 const makeFetchProvider = dependencyIndex => ({
   canProvide: makeCanProvide(dependencyIndex),
-  provide: makeProvider(dependencyIndex),
+  provide: makeProvide(dependencyIndex),
 });
 
 export default makeFetchProvider;

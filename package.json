@@ -1,11 +1,13 @@
 {
   "name": "@generative-music/web-provider",
   "version": "0.0.0",
-  "description": "",
-  "main": "karma.conf.js",
-  "dependencies": {
-    "@generative-music/samples-alex-bainter": "^0.1.0"
-  },
+  "description": "A collection of audio sample file providers for use in the browser",
+  "main": "dist/web-provider.cjs.js",
+  "module": "dist/web-provider.esm.js",
+  "files": [
+    "dist/web-provider.esm.js"
+  ],
+  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
@@ -23,7 +25,10 @@
   },
   "scripts": {
     "test": "karma start",
-    "test:watch": "karma start --no-single-run"
+    "test:watch": "karma start --no-single-run",
+    "build": "rollup -c",
+    "lint": "eslint .",
+    "preversion": "npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
