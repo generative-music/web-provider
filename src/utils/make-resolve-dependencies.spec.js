@@ -11,12 +11,11 @@ describe('resolve dependencies', () => {
       dep3: ['beep boop'],
     };
     const markResolved = url => `RESOLVED::${url}`;
-    const resolveUrls = urls =>
-      Promise.all(urls.map(url => Promise.resolve(markResolved(url))));
-    return makeResolveDependencies(
-      dependencyIndex,
-      resolveUrls
-    )(['dep1', 'dep2']).then(result => {
+    const resolveUrl = url => Promise.resolve(markResolved(url));
+    return makeResolveDependencies(dependencyIndex)(
+      ['dep1', 'dep2'],
+      resolveUrl
+    ).then(result => {
       const dependencyNames = Reflect.ownKeys(result);
       expect(dependencyNames).to.have.members(['dep1', 'dep2']);
       dependencyNames.forEach(depName => {

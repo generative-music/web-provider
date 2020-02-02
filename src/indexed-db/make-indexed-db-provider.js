@@ -1,12 +1,16 @@
 import makeCanProvide from './make-can-provide';
 import makeProvide from './make-provide';
-import makeFetchProvider from '../fetch/make-fetch-provider';
+import makeCanProvideFresh from '../fetch/make-can-provide';
+
+const fetchArrayBuffer = url =>
+  window.fetch(url).then(response => response.arrayBuffer());
 
 const makeIndexedDbProvider = dependencyIndex => {
-  const { canProvide, provide } = makeFetchProvider(dependencyIndex);
+  const canProvideFresh = makeCanProvideFresh(dependencyIndex);
+
   return {
-    canProvide: makeCanProvide(dependencyIndex, canProvide),
-    provide: makeProvide(dependencyIndex, provide),
+    canProvide: makeCanProvide(dependencyIndex, canProvideFresh),
+    provide: makeProvide(dependencyIndex, fetchArrayBuffer),
   };
 };
 

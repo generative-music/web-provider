@@ -7,80 +7,34 @@ import makeResolveDependencies from '../utils/make-resolve-dependencies';
 const cacheUrl = (db, url, arrayBuffer) =>
   promisifyTransaction(
     db
-      .transaction([DEPENDENCY_OBJECT_STORE_NAME])
+      .transaction([DEPENDENCY_OBJECT_STORE_NAME], 'readwrite')
       .objectStore(DEPENDENCY_OBJECT_STORE_NAME)
       .put(arrayBuffer, url)
   );
 
-const retrieveAudioBuffer = (db, url, audioContext) =>
-  getCachedUrl(db, url).then(
-    arrayBuffer => arrayBuffer && audioContext.decodeAudioData(arrayBuffer)
+const makeGetFreshAndCache = (db, getFreshUrl) => url =>
+  getFreshUrl(url).then(arrayBuffer =>
+    cacheUrl(db, url, arrayBuffer).then(() => arrayBuffer)
   );
 
-const retrieveAudioBuffers = (urls, audioContext) =>
-  openDb().then(db =>
-    Promise.all(urls.map(url => retrieveAudioBuffer(db, url, audioContext)))
-  );
+const makeGetFromCache = db => url => getCachedUrl(db, url);
 
-const makeProvideAndCacheDependencies = (provide, dependencyIndex) => (
-  dependencyNames,
-  audioContext
-) =>
-  Promise.all(provide(dependencyNames, audioContext), openDb()).then(
-    ([fallbackDependencies, db]) =>
-      Promise.all(
-        Reflect.ownKeys(fallbackDependencies).reduce(
-          (cachePromises, dependencyName) => {
-            const requestedDependency = dependencyIndex[dependencyName];
-            const fallbackDependency = fallbackDependencies[dependencyName];
-            if (Array.isArray(fallbackDependency)) {
-              return cachePromises.concat(
-                fallbackDependency.map((arrayBuffer, i) =>
-                  cacheUrl(db, requestedDependency[i], arrayBuffer)
-                )
-              );
-            }
-            return cachePromises.concat(
-              Reflect.ownKeys(fallbackDependency).map(key =>
-                cacheUrl(db, requestedDependency[key], fallbackDependency[key])
-              )
-            );
-          },
-          []
+const makeGetUrl = (db, getFreshUrl) => {
+  const getFromCache = makeGetFromCache(db);
+  const getFreshAndCache = makeGetFreshAndCache(db, getFreshUrl);
+  return url =>
+    getFromCache(url).then(arrayBuffer => arrayBuffer || getFreshAndCache(url));
+};
+
+const makeProvideWithFallback = (dependencyIndex, getFresh) => {
+  const resolveDependencies = makeResolveDependencies(dependencyIndex);
+  return (dependencyNames = [], audioContext) =>
+    openDb().then(db => {
+      const getUrl = makeGetUrl(db, getFresh);
+      return resolveDependencies(dependencyNames, url =>
+        getUrl(url).then(arrayBuffer =>
+          audioContext.decodeAudioData(arrayBuffer)
         )
-      ).then(() => fallbackDependencies)
-  );
-
-const makeProvideWithFallback = (dependencyIndex, provideFresh) => {
-  const provideFromCache = makeResolveDependencies(
-    dependencyIndex,
-    retrieveAudioBuffers
-  );
-  const provideAndCacheDependencies = makeProvideAndCacheDependencies(
-    provideFresh,
-    dependencyIndex
-  );
-  return (dependencyNames, audioContext) =>
-    provideFromCache(dependencyNames, audioContext).then(cachedDependencies => {
-      const uncachedDependencyNames = Reflect.ownKeys(
-        cachedDependencies
-      ).filter(dependencyName => {
-        const cachedDependency = cachedDependencies[dependencyName];
-        if (Array.isArray(cachedDependency)) {
-          return cachedDependency.some(arrayBuffer => !arrayBuffer);
-        }
-        return Reflect.ownKeys(cachedDependency).some(
-          key => !cachedDependency[key]
-        );
-      });
-      if (uncachedDependencyNames.length === 0) {
-        return cachedDependencies;
-      }
-      return provideAndCacheDependencies(
-        uncachedDependencyNames,
-        audioContext
-      ).then(fallbackDependencies =>
-        Object.assign({}, cachedDependencies, fallbackDependencies)
       );
     });
 };

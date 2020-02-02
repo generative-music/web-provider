@@ -1,15 +1,12 @@
-import makeCanProvideFresh from '../fetch/make-can-provide';
 import openCache from './open-cache';
 
-const makeCanProvide = dependencyIndex => {
-  const canProvideFresh = makeCanProvideFresh(dependencyIndex);
-
+const makeCanProvide = (dependencyIndex, canProvideFresh) => {
   const isNotCached = (cachedUrlSet, dependencyName) => {
     const dependency = dependencyIndex[dependencyName];
     const urls = Array.isArray(dependency)
       ? dependency
       : Reflect.ownKeys(dependency).map(key => dependency[key]);
-    return urls.some(url => !cachedUrlSet.includes(url));
+    return urls.some(url => !cachedUrlSet.has(new Request(url).url));
   };
 
   return (dependencyNames = []) => {
@@ -18,8 +15,8 @@ const makeCanProvide = dependencyIndex => {
     }
     return openCache()
       .then(cache => cache.keys())
-      .then(cachedUrls => {
-        const cachedUrlSet = new Set(cachedUrls);
+      .then(cachedRequests => {
+        const cachedUrlSet = new Set(cachedRequests.map(({ url }) => url));
         const uncachedDependencyNames = dependencyNames.filter(dependencyName =>
           isNotCached(cachedUrlSet, dependencyName)
         );
