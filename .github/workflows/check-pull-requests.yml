@@ -17,5 +17,5 @@ jobs:
       with:
         node-version: '10.x'
     - run: npm ci
-    - run: npm lint
+    - run: npm run lint
     - run: npm test
