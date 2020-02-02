@@ -1,6 +1,6 @@
 {
   "name": "@generative-music/web-provider",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A collection of audio sample file providers for use in the browser",
   "main": "dist/web-provider.cjs.js",
   "module": "dist/web-provider.esm.js",
@@ -28,7 +28,8 @@
     "test:watch": "karma start --no-single-run",
     "build": "rollup -c",
     "lint": "eslint .",
-    "preversion": "npm run lint && npm run build"
+    "preversion": "npm run lint && npm run test && npm run build",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
