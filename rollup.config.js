@@ -12,6 +12,7 @@ const config = {
       file: `./dist/web-provider.cjs.js`,
     },
   ],
+  external: ['@generative-music/sample-index-transformer'],
 };
 
 module.exports = config;
