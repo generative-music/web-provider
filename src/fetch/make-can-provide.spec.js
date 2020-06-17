@@ -1,6 +1,3 @@
-/*eslint-env mocha*/
-
-import expect from 'chai/interface/expect';
 import makeCanProvide from './make-can-provide';
 
 const fakeOnLineValue = value => {

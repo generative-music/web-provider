@@ -7,19 +7,21 @@
   "files": [
     "dist/web-provider.esm.js"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@generative-music/sample-index-transformer": "^0.1.1"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-config-metalex9": "^0.4.0",
-    "karma": "^4.4.1",
+    "karma": "^5.1.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-mocha": "^1.3.0",
+    "karma-mocha": "^2.0.1",
     "karma-rollup-preprocessor": "^7.0.3",
-    "mocha": "^7.0.0",
+    "mocha": "^8.0.1",
     "prettier": "^1.19.1",
     "rollup": "^1.29.1"
   },

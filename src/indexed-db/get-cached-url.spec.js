@@ -1,6 +1,3 @@
-/*eslint-env mocha*/
-
-import expect from 'chai/interface/expect';
 import openDb from './open-db';
 import getCachedUrl from './get-cached-url';
 import DEPENDENCY_OBJECT_STORE_NAME from './dependency-object-store-name';

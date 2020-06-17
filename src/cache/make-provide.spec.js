@@ -1,7 +1,3 @@
-/*eslint-env mocha*/
-/*eslint-disable no-unused-expressions*/
-
-import expect from 'chai/interface/expect';
 import makeProvide from './make-provide';
 
 const markArrayBuffer = url => `${url}::ARRAY_BUFFER`;

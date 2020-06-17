@@ -1,7 +1,3 @@
-/*eslint-env mocha*/
-/*eslint-disable no-unused-expressions*/
-
-import expect from 'chai/interface/expect';
 import openCache from './open-cache';
 import makeCanProvide from './make-can-provide';
 

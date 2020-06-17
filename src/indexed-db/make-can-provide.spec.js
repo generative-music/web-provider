@@ -1,7 +1,3 @@
-/*eslint-env mocha*/
-/*eslint-disable no-unused-expressions*/
-
-import expect from 'chai/interface/expect';
 import openDb from './open-db';
 import DEPENDENCY_OBJECT_STORE_NAME from './dependency-object-store-name';
 import promisifyTransaction from './promisify-transaction';

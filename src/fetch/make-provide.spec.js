@@ -1,6 +1,3 @@
-/*eslint-env mocha*/
-
-import expect from 'chai/interface/expect';
 import makeProvide from './make-provide';
 
 const markFetched = url => `${url}::FETCHED`;

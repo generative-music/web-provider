@@ -1,8 +1,8 @@
+import transform from '@generative-music/sample-index-transformer';
 import openDb from './open-db';
 import DEPENDENCY_OBJECT_STORE_NAME from './dependency-object-store-name';
 import promisifyTransaction from './promisify-transaction';
 import getCachedUrl from './get-cached-url';
-import makeResolveDependencies from '../utils/make-resolve-dependencies';
 
 const cacheUrl = (db, url, arrayBuffer) =>
   promisifyTransaction(
@@ -26,17 +26,15 @@ const makeGetUrl = (db, getFreshUrl) => {
     getFromCache(url).then(arrayBuffer => arrayBuffer || getFreshAndCache(url));
 };
 
-const makeProvideWithFallback = (dependencyIndex, getFresh) => {
-  const resolveDependencies = makeResolveDependencies(dependencyIndex);
-  return (dependencyNames = [], audioContext) =>
-    openDb().then(db => {
-      const getUrl = makeGetUrl(db, getFresh);
-      return resolveDependencies(dependencyNames, url =>
-        getUrl(url).then(arrayBuffer =>
-          audioContext.decodeAudioData(arrayBuffer)
-        )
-      );
-    });
-};
+const makeProvideWithFallback = (dependencyIndex, getFresh) => (
+  dependencyNames = [],
+  audioContext
+) =>
+  openDb().then(db => {
+    const getUrl = makeGetUrl(db, getFresh);
+    return transform(dependencyIndex, dependencyNames, url =>
+      getUrl(url).then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+    );
+  });
 
 export default makeProvideWithFallback;

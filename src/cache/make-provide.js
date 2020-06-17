@@ -1,5 +1,5 @@
+import transform from '@generative-music/sample-index-transformer';
 import openCache from './open-cache';
-import makeResolveDependencies from '../utils/make-resolve-dependencies';
 
 const makeRetrieveAudioBuffer = (cache, audioContext) => url =>
   cache
@@ -8,15 +8,13 @@ const makeRetrieveAudioBuffer = (cache, audioContext) => url =>
     .then(response => response.arrayBuffer())
     .then(ab => audioContext.decodeAudioData(ab));
 
-const makeProvide = dependencyIndex => {
-  const resolveDependencies = makeResolveDependencies(dependencyIndex);
-  return (dependencyNames = [], audioContext) =>
-    openCache().then(cache =>
-      resolveDependencies(
-        dependencyNames,
-        makeRetrieveAudioBuffer(cache, audioContext)
-      )
-    );
-};
+const makeProvide = dependencyIndex => (dependencyNames = [], audioContext) =>
+  openCache().then(cache =>
+    transform(
+      dependencyIndex,
+      dependencyNames,
+      makeRetrieveAudioBuffer(cache, audioContext)
+    )
+  );
 
 export default makeProvide;
