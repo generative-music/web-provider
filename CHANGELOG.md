@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None
 
+## [1.1.0] - 2020-06-16
+
+### Added
+
+- New [@generative-music/sample-index-transformer](https://github.com/generative-music/sample-index-transformer) dependency.
+
 ## [1.0.0] - 2020-02-02
 
 ### Removed
@@ -25,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release with three separate providers.
 
-[unreleased]: https://github.com/generative-music/web-provider/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/generative-music/web-provider/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/generative-music/web-provider/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/generative-music/web-provider/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/generative-music/web-provider/releases/tag/v0.0.1
