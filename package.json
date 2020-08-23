@@ -5,10 +5,11 @@
   "main": "dist/web-provider.cjs.js",
   "module": "dist/web-provider.esm.js",
   "files": [
-    "dist/web-provider.esm.js"
+    "dist/web-provider.esm.js",
+    "worker"
   ],
   "dependencies": {
-    "@generative-music/sample-index-transformer": "^0.1.1"
+    "lamejs": "^1.2.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",
@@ -23,7 +24,8 @@
     "karma-rollup-preprocessor": "^7.0.3",
     "mocha": "^8.0.1",
     "prettier": "^1.19.1",
-    "rollup": "^1.29.1"
+    "rollup": "^1.29.1",
+    "sinon": "^9.0.3"
   },
   "scripts": {
     "test": "karma start",

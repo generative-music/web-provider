@@ -1,15 +1,11 @@
-import makeCacheProvider from './cache/make-cache-provider';
-import makeFetchProvider from './fetch/make-fetch-provider';
-import makeIndexedDbProvider from './indexed-db/make-indexed-db-provider';
+import has from './has/has';
+import request from './request/request';
+import makeSave from './save/make-save';
 
-const makeWebProvider = dependencyIndex => {
-  if (window.caches) {
-    return makeCacheProvider(dependencyIndex);
-  }
-  if (window.indexedDB) {
-    return makeIndexedDbProvider(dependencyIndex);
-  }
-  return makeFetchProvider(dependencyIndex);
-};
+const makeWebProvider = saveWorker => ({
+  has,
+  request,
+  save: makeSave(saveWorker),
+});
 
 export default makeWebProvider;
