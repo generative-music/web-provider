@@ -55,13 +55,14 @@ The `request` method of the `WebProvider` interface returns a `Promise` that res
 #### Syntax
 
 ```javascript
-webProvider.request(urls).then(function(results) {
+webProvider.request(audioContext, urls).then(function(results) {
   // Do something with the results
 });
 ```
 
 ##### Parameters
 
+- **`audioContext`**: An [`AudioContext`](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext) object used to create the [`AudioBuffer`] instances.
 - **`urls`**: An array of strings containing URLs to audio files.
 
 ##### Return value
