@@ -27,6 +27,7 @@ const pkgConfig = {
       file: `./dist/web-provider.cjs.js`,
     },
   ],
+  external: ['@alexbainter/indexed-db'],
 };
 
 module.exports = [workerConfig, pkgConfig];
