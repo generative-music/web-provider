@@ -9,6 +9,7 @@
     "worker"
   ],
   "dependencies": {
+    "@alexbainter/indexed-db": "^0.1.1",
     "lamejs": "^1.2.0"
   },
   "devDependencies": {

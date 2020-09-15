@@ -1,7 +1,7 @@
+import { promisifyRequest } from '@alexbainter/indexed-db';
 import has from './has';
 import openDb from '../indexed-db/open-db';
 import DEPENDENCY_OBJECT_STORE_NAME from '../indexed-db/dependency-object-store-name';
-import promisifyTransaction from '../indexed-db/promisify-transaction';
 
 const URLS = Array.from({ length: 4 }, (_, i) => `/url/${i}`);
 
@@ -41,9 +41,7 @@ describe('has', () => {
         .transaction([DEPENDENCY_OBJECT_STORE_NAME], 'readwrite')
         .objectStore(DEPENDENCY_OBJECT_STORE_NAME);
       await Promise.all(
-        INDEXED_DB_URLS.map(url =>
-          promisifyTransaction(objectStore.put(url, url))
-        )
+        INDEXED_DB_URLS.map(url => promisifyRequest(objectStore.put(url, url)))
       );
     });
     after(async () => {
@@ -56,9 +54,7 @@ describe('has', () => {
         .transaction([DEPENDENCY_OBJECT_STORE_NAME], 'readwrite')
         .objectStore(DEPENDENCY_OBJECT_STORE_NAME);
       await Promise.all(
-        INDEXED_DB_URLS.map(url =>
-          promisifyTransaction(objectStore.delete(url))
-        )
+        INDEXED_DB_URLS.map(url => promisifyRequest(objectStore.delete(url)))
       );
     });
     it('should return false if the URLS are not cached', async () => {

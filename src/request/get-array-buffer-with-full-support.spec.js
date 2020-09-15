@@ -1,5 +1,5 @@
+import { promisifyRequest } from '@alexbainter/indexed-db';
 import openDb from '../indexed-db/open-db';
-import promisifyTransaction from '../indexed-db/promisify-transaction';
 import DEPENDENCY_OBJECT_STORE_NAME from '../indexed-db/dependency-object-store-name';
 import getArrayBuffersWithFullSupport from './get-array-buffers-with-full-support';
 
@@ -43,9 +43,9 @@ describe('get-array-buffers-with-full-support', () => {
       .objectStore(DEPENDENCY_OBJECT_STORE_NAME);
     await Promise.all(
       CACHED_URLS.map(url =>
-        promisifyTransaction(objectStore.put(markLoadedFromIndexedDb(url), url))
+        promisifyRequest(objectStore.put(markLoadedFromIndexedDb(url), url))
       ).concat(
-        UNCACHED_URLS.map(url => promisifyTransaction(objectStore.delete(url)))
+        UNCACHED_URLS.map(url => promisifyRequest(objectStore.delete(url)))
       )
     );
   });
@@ -59,7 +59,7 @@ describe('get-array-buffers-with-full-support', () => {
       .objectStore(DEPENDENCY_OBJECT_STORE_NAME);
     await Promise.all(
       CACHED_URLS.concat(UNCACHED_URLS).map(url =>
-        promisifyTransaction(objectStore.delete(url))
+        promisifyRequest(objectStore.delete(url))
       )
     );
   });

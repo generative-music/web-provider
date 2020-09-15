@@ -9,17 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None
 
+## [2.0.2] - 2020-09-14
+
+### Fixed
+
+- Replace `window` reference with `self` in the worker.
+
 ## [2.0.1] - 2020-08-24
 
 ### Fixed
 
-- Add `audioContext` to `WebProvider.request()` in the README
+- Add `audioContext` to `WebProvider.request()` in the README.
 
 ## [2.0.0] - 2020-08-23
 
 ### Changed
 
-- Complete rewrite with new API
+- Complete rewrite with new API.
 
 ## [1.1.0] - 2020-06-16
 
@@ -43,7 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release with three separate providers.
 
-[unreleased]: https://github.com/generative-music/web-provider/compare/v2.0.1...HEAD
+[unreleased]: https://github.com/generative-music/web-provider/compare/v2.0.2...HEAD
+[2.0.2]: https://github.com/generative-music/web-provider/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/generative-music/web-provider/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/generative-music/web-provider/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/generative-music/web-provider/compare/v1.0.0...v1.1.0

@@ -1,10 +1,10 @@
+import { promisifyRequest } from '@alexbainter/indexed-db';
 import openDb from './open-db';
-import promisifyTransaction from './promisify-transaction';
 import DEPENDENCY_OBJECT_STORE_NAME from './dependency-object-store-name';
 
 const getKeys = async () => {
   const db = await openDb();
-  return promisifyTransaction(
+  return promisifyRequest(
     db
       .transaction([DEPENDENCY_OBJECT_STORE_NAME])
       .objectStore(DEPENDENCY_OBJECT_STORE_NAME)

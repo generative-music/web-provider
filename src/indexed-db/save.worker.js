@@ -1,7 +1,7 @@
+import { promisifyRequest } from '@alexbainter/indexed-db';
 import { Mp3Encoder } from 'lamejs';
 import asyncPipe from '../shared/async-pipe';
 import openDb from './open-db';
-import promisifyTransaction from './promisify-transaction';
 import DEPENDENCY_OBJECT_STORE_NAME from './dependency-object-store-name';
 import isSupported from './is-supported';
 
@@ -36,7 +36,7 @@ const encodeAsMp3 = ({ length, sampleRate, channelData }) => {
 
 const cacheArrayBuffer = async (url, arrayBuffer) => {
   const db = await openDb();
-  await promisifyTransaction(
+  await promisifyRequest(
     db
       .transaction([DEPENDENCY_OBJECT_STORE_NAME], 'readwrite')
       .objectStore(DEPENDENCY_OBJECT_STORE_NAME)

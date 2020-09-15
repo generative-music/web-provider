@@ -1,1 +1,1 @@
-export default Boolean(window.indexedDB);
+export default Boolean(self.indexedDB);

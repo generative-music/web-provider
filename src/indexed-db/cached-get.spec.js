@@ -1,5 +1,5 @@
+import { promisifyRequest } from '@alexbainter/indexed-db';
 import openDb from './open-db';
-import promisifyTransaction from './promisify-transaction';
 import DEPENDENCY_OBJECT_STORE_NAME from './dependency-object-store-name';
 import cachedGet from './cached-get';
 
@@ -25,9 +25,9 @@ describe('indexed-db/cached-get', () => {
       .objectStore(DEPENDENCY_OBJECT_STORE_NAME);
     await Promise.all(
       CACHED_URLS.map(url =>
-        promisifyTransaction(objectStore.put(markLoadedFromCache(url), url))
+        promisifyRequest(objectStore.put(markLoadedFromCache(url), url))
       ).concat(
-        UNCACHED_URLS.map(url => promisifyTransaction(objectStore.delete(url)))
+        UNCACHED_URLS.map(url => promisifyRequest(objectStore.delete(url)))
       )
     );
   });
@@ -38,7 +38,7 @@ describe('indexed-db/cached-get', () => {
       .objectStore(DEPENDENCY_OBJECT_STORE_NAME);
     await Promise.all(
       CACHED_URLS.concat(UNCACHED_URLS).map(url =>
-        promisifyTransaction(objectStore.delete(url))
+        promisifyRequest(objectStore.delete(url))
       )
     );
   });
@@ -56,7 +56,7 @@ describe('indexed-db/cached-get', () => {
       .transaction([DEPENDENCY_OBJECT_STORE_NAME])
       .objectStore(DEPENDENCY_OBJECT_STORE_NAME);
     const cachedContents = await Promise.all(
-      UNCACHED_URLS.map(url => promisifyTransaction(objectStore.get(url)))
+      UNCACHED_URLS.map(url => promisifyRequest(objectStore.get(url)))
     );
     expect(cachedContents).to.eql(UNCACHED_URLS.map(markFetched));
   });

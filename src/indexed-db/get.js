@@ -1,5 +1,5 @@
+import { promisifyRequest } from '@alexbainter/indexed-db';
 import openDb from './open-db';
-import promisifyTransaction from './promisify-transaction';
 import DEPENDENCY_OBJECT_STORE_NAME from './dependency-object-store-name';
 
 const get = async (urls = []) => {
@@ -8,9 +8,7 @@ const get = async (urls = []) => {
     .transaction([DEPENDENCY_OBJECT_STORE_NAME])
     .objectStore(DEPENDENCY_OBJECT_STORE_NAME);
   return Promise.all(
-    urls.map(url =>
-      promisifyTransaction(objectStore.get(url)).catch(() => null)
-    )
+    urls.map(url => promisifyRequest(objectStore.get(url)).catch(() => null))
   );
 };
 
