@@ -31,7 +31,7 @@ const save = async (worker, cacheEntries) => {
           };
 
           const handleMessage = ({ data }) => {
-            if (data.url === url) {
+            if (data === url) {
               worker.removeEventListener(
                 WORKER_MESSAGE_EVENT_TYPE,
                 handleMessage
