@@ -12,7 +12,7 @@ const workerConfig = {
       file: `./worker/save-worker.cjs.js`,
     },
   ],
-  external: ['lamejs'],
+  external: ['lamejs', '@alexbainter/indexed-db'],
 };
 
 const pkgConfig = {
