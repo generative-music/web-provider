@@ -36,7 +36,7 @@ const save = async (worker, cacheEntries) => {
                 WORKER_MESSAGE_EVENT_TYPE,
                 handleMessage
               );
-              inProgress.remove(url);
+              inProgress.delete(url);
               resolve();
             }
           };
