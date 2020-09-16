@@ -1,6 +1,6 @@
 {
   "name": "@generative-music/web-provider",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "An audio sample file provider with caching for use in the browser",
   "main": "dist/web-provider.cjs.js",
   "module": "dist/web-provider.esm.js",
