@@ -4,16 +4,16 @@ An audio sample file provider with caching for use in the browser.
 
 ## Usage
 
-The default export of this library is the factory function `makeWebProvider`, which returns [`WebProvider`](#WebProvider) instances. `WebProvider` instances can be used to fetch, cache, and decode audio files.
+The default export of this library is the factory function `createProvider`, which returns [`WebProvider`](#WebProvider) instances. `WebProvider` instances can be used to fetch, cache, and decode audio files.
 
-### `makeWebProvider()`
+### `createProvider()`
 
 A factory function which returns a `WebProvider`.
 
 #### Syntax
 
 ```javascript
-const webProvider = makeProvider(saveWorker);
+const webProvider = createProvider(saveWorker);
 ```
 
 ##### Parameters

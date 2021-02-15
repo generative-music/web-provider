@@ -34,15 +34,19 @@ const encodeAsMp3 = ({ length, sampleRate, channelData }) => {
   return blob.arrayBuffer();
 };
 
-const cacheArrayBuffer = async (url, arrayBuffer) => {
-  const db = await openDb();
-  await promisifyRequest(
-    db
-      .transaction([DEPENDENCY_OBJECT_STORE_NAME], 'readwrite')
-      .objectStore(DEPENDENCY_OBJECT_STORE_NAME)
-      .put(arrayBuffer, url)
-  );
-};
+const cacheArrayBuffer = (url, arrayBuffer) =>
+  openDb()
+    .then(db =>
+      promisifyRequest(
+        db
+          .transaction([DEPENDENCY_OBJECT_STORE_NAME], 'readwrite')
+          .objectStore(DEPENDENCY_OBJECT_STORE_NAME)
+          .put(arrayBuffer, url)
+      )
+    )
+    .catch(err => {
+      console.error('Unable to cache array buffer', err);
+    });
 
 self.onmessage = isSupported
   ? async event => {
