@@ -16,6 +16,7 @@ const get = (urls = []) =>
     })
     .catch(err => {
       console.error('Unable to get urls', err);
+      return urls.map(() => null);
     });
 
 export default get;

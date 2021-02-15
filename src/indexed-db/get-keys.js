@@ -14,6 +14,7 @@ const getKeys = () =>
     )
     .catch(error => {
       console.error('Unable to get provider keys', error);
+      return [];
     });
 
 export default getKeys;
