@@ -1,6 +1,7 @@
 import { promisifyRequest } from '@alexbainter/indexed-db';
 import openDb from './open-db';
 import DEPENDENCY_OBJECT_STORE_NAME from './dependency-object-store-name';
+import getFromNetwork from '../fetch/get';
 
 const get = (urls = []) =>
   openDb()
@@ -16,7 +17,7 @@ const get = (urls = []) =>
     })
     .catch(err => {
       console.error('Unable to get urls', err);
-      return urls.map(() => null);
+      return getFromNetwork(urls);
     });
 
 export default get;
