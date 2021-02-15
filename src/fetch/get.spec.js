@@ -22,38 +22,43 @@ describe('fetch/get', () => {
     const results = await get(URLS);
     expect(results).to.eql(URLS.map(markFetchedAndConvertedToArrayBuffer));
   });
-  it('should return null for any urls which failed to fetch', async () => {
+  it('should reject if any urls fail to fetch', async () => {
     const badUrl = '/bad-url/';
     window.fetch = url => {
       if (url === badUrl) {
-        return Promise.reject(Error('Failed to fetch'));
+        return Promise.reject(new Error('Failed to fetch'));
       }
       return Promise.resolve({
         arrayBuffer: () =>
           Promise.resolve(markFetchedAndConvertedToArrayBuffer(url)),
       });
     };
-    const results = await get(URLS.concat([badUrl]));
-
-    expect(results).to.eql(
-      URLS.map(markFetchedAndConvertedToArrayBuffer).concat([null])
-    );
+    try {
+      await get(URLS.concat([badUrl]));
+      assert.fail('Expected getting a bad url to throw');
+    } catch (error) {
+      expect(error).to.be.an('Error');
+    }
   });
-  it('should return null for any urls which could not be fetched as an array buffer', async () => {
+  it('should reject if any urls could not be decoded', async () => {
     const badUrl = '/bad-url/';
     window.fetch = url =>
       Promise.resolve({
         arrayBuffer: () => {
           if (url === badUrl) {
-            return Promise.reject(Error('Failed to convert to arrayBuffer'));
+            return Promise.reject(
+              new Error('Failed to convert to arrayBuffer')
+            );
           }
           return Promise.resolve(markFetchedAndConvertedToArrayBuffer(url));
         },
       });
-
-    const results = await get(URLS.concat([badUrl]));
-    expect(results).to.eql(
-      URLS.map(markFetchedAndConvertedToArrayBuffer).concat([null])
-    );
+    try {
+      await get(URLS.concat([badUrl]));
+    } catch (error) {
+      expect(error).to.be.an.instanceOf(Error);
+      return;
+    }
+    assert.fail('Expected getting a bad url to throw');
   });
 });

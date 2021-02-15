@@ -4,7 +4,7 @@ import getFromNetwork from '../fetch/get';
 const cachedGet = async (urls = []) => {
   try {
     const cache = await openCache();
-    return Promise.all(
+    const arrayBuffers = await Promise.all(
       urls.map(url =>
         cache
           .match(url)
@@ -12,9 +12,9 @@ const cachedGet = async (urls = []) => {
             response => response || cache.add(url).then(() => cache.match(url))
           )
           .then(response => response.arrayBuffer())
-          .catch(() => null)
       )
     );
+    return arrayBuffers;
   } catch (err) {
     console.error('Unable to get samples from cache', err);
     return getFromNetwork(urls);

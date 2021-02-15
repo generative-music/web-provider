@@ -14,7 +14,8 @@
         "mocha": true
       },
       "globals": {
-        "expect": "readonly"
+        "expect": "readonly",
+        "assert": "readonly"
       },
       "rules": {
         "no-unused-expressions": 0

@@ -67,7 +67,7 @@ webProvider.request(audioContext, urls).then(function(results) {
 
 ##### Return value
 
-A `Promise` which resolves to an array of `AudioBuffer` instances of the requested audio files. If an audio file could not be loaded or decoded, it will have a `null` value instead. The resolved array is of the same length as `urls` and in the same order.
+A `Promise` which resolves to an array of `AudioBuffer` instances of the requested audio files. The resolved array is of the same length as `urls` and in the same order. If an audio file could not be loaded or decoded, the promise will reject.
 
 ### `WebProvider.save()`
 
